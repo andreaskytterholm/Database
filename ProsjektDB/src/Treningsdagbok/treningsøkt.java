@@ -15,6 +15,9 @@ public class treningsøkt {
 	
 	
 	
+	//Testing av gir, bare aa fjerne denne om du onsker :)
+	
+	
 
 
 }
