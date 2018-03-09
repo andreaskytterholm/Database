@@ -7,5 +7,10 @@ public class apparatøvelse {
 	private int kilo;
 	private int sett;
 	
+	public apparatøvelse(String øvelse)
+	{
+		this.øvlese = øvelse;
+	}
+	
 
 }
