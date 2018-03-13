@@ -2,22 +2,23 @@ package Treningsdagbok;
 
 import java.sql.*;
 import java.util.*;
+import com.mysql.jdbc.Connection;
 
-public class øvelse {
+public class Ovelse extends ActiveDomainObject{
 
-	private int øvID;
+	private int ovID;
 	private String navn;
 	
 	private static ID_provider;
 	
 	
 	
-	public øvelse (int øvID) {
-		øvID = ID_provider;
+	public Ovelse (int ovID) {
+		ovID = ID_provider;
 	}
 	
-	public int getøvID() {
-		return øvID;
+	public int getovID() {
+		return ovID;
 	}
 	
 	public void initialize (Connection conn) {

@@ -1,8 +1,5 @@
 package Treningsdagbok;
 
-	public class DBConn {
-
-
 	import java.sql.*;
 	import java.util.Properties;
 
