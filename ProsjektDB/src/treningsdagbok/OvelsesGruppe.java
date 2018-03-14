@@ -1,18 +1,11 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-import java.util.Date;
-import java.sql.*;
-import java.util.*;
-
-
-public class Treningsokt extends ActiveDomainObject{
+public class OvelsesGruppe extends ActiveDomainObject{
 	
-	private ArrayList<Ovelse> ovelser;
-	private int oktID;
-	private Date dato;
-	private int tidspunkt;
-	private int varighet;
-	
+	private int ovelsesgruppeID;
+	private String navn;
+	private String beskrivelse;
+
 	
 	
 	public void initialize (Connection conn) {
@@ -45,7 +38,8 @@ public class Treningsokt extends ActiveDomainObject{
             return;
         }
     }
-
-
 }
+
+
+
 

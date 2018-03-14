@@ -1,17 +1,10 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class apparatovelse extends ActiveDomainObject{
+public class OvelseIOkt extends ActiveDomainObject {
 	
-	private ovelse ovelse;
-	private Apparat apparat;
-	private int kilo;
-	private int sett;
-	
-	public apparatovelse(String ovelse)
-	{
-		this.ovlese = ovelse;
-	}
-	
+	private Treningsokt treningsokt;
+	private Ovelse ovelse;
+
 	
 	
 	public void initialize (Connection conn) {
@@ -44,5 +37,5 @@ public class apparatovelse extends ActiveDomainObject{
             return;
         }
     }
-
 }
+

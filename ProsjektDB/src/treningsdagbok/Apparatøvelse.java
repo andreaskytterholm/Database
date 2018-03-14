@@ -1,9 +1,16 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class Friovelse extends ActiveDomainObject{
-
-	private Ovelse ovelse;
-	private String beskrivelse;
+public class apparatovelse extends ActiveDomainObject{
+	
+	private ovelse ovelse;
+	private Apparat apparat;
+	private int kilo;
+	private int sett;
+	
+	public apparatovelse(String ovelse)
+	{
+		this.ovlese = ovelse;
+	}
 	
 	
 	
@@ -37,4 +44,5 @@ public class Friovelse extends ActiveDomainObject{
             return;
         }
     }
+
 }

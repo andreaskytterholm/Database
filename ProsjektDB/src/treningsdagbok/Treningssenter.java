@@ -1,10 +1,14 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class OvelseIOkt extends ActiveDomainObject {
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+public class Treningssenter extends ActiveDomainObject{
 	
-	private Treningsokt treningsokt;
-	private Ovelse ovelse;
+	private int senterID;
+	private String navn;
 
+	
 	
 	
 	public void initialize (Connection conn) {
@@ -12,9 +16,9 @@ public class OvelseIOkt extends ActiveDomainObject {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {
-                navn =  rs.getString("navn");
-                epost = rs.getString("epost");
-                type = rs.getInt("brukertype");
+                senterID =  rs.getString("senterID");
+                navn = rs.getString("navn");
+          
             }
 
         } catch (Exception e) {
@@ -37,5 +41,7 @@ public class OvelseIOkt extends ActiveDomainObject {
             return;
         }
     }
+
 }
+
 

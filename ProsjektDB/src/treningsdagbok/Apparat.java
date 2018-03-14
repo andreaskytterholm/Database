@@ -1,11 +1,11 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class OvelseIGruppe extends ActiveDomainObject {
+public class Apparat extends ActiveDomainObject{
 	
-	private OvelsesGruppe ovelsesGruppe;
-	private Ovelse ovelse;
-
-	
+	private int apparatID;
+	private String navn;
+	private String beskrivelse;
+	private Treningssenter treningssenter;
 	
 	
 	public void initialize (Connection conn) {
@@ -38,6 +38,9 @@ public class OvelseIGruppe extends ActiveDomainObject {
             return;
         }
     }
+
 }
+
+
 
 

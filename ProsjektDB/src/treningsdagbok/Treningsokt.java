@@ -1,13 +1,17 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+import java.util.Date;
+import java.sql.*;
+import java.util.*;
 
-public class Treningssenter extends ActiveDomainObject{
+
+public class Treningsokt extends ActiveDomainObject{
 	
-	private int senterID;
-	private String navn;
-
+	private ArrayList<Ovelse> ovelser;
+	private int oktID;
+	private Date dato;
+	private int tidspunkt;
+	private int varighet;
 	
 	
 	
@@ -16,9 +20,9 @@ public class Treningssenter extends ActiveDomainObject{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {
-                senterID =  rs.getString("senterID");
-                navn = rs.getString("navn");
-          
+                navn =  rs.getString("navn");
+                epost = rs.getString("epost");
+                type = rs.getInt("brukertype");
             }
 
         } catch (Exception e) {
@@ -42,6 +46,6 @@ public class Treningssenter extends ActiveDomainObject{
         }
     }
 
-}
 
+}
 

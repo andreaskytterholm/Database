@@ -1,11 +1,13 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class Apparat extends ActiveDomainObject{
+public class Notat extends ActiveDomainObject {
 	
-	private int apparatID;
-	private String navn;
+	private int notatID;
+	private String form;
+	private String prestasjon;
 	private String beskrivelse;
-	private Treningssenter treningssenter;
+	private treningsokt treningsokt;
+
 	
 	
 	public void initialize (Connection conn) {
@@ -38,9 +40,6 @@ public class Apparat extends ActiveDomainObject{
             return;
         }
     }
-
 }
-
-
 
 

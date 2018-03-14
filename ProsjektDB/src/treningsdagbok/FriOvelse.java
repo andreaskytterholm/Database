@@ -1,11 +1,10 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class OvelsesGruppe extends ActiveDomainObject{
-	
-	private int ovelsesgruppeID;
-	private String navn;
+public class Friovelse extends ActiveDomainObject{
+
+	private Ovelse ovelse;
 	private String beskrivelse;
-
+	
 	
 	
 	public void initialize (Connection conn) {
@@ -13,9 +12,8 @@ public class OvelsesGruppe extends ActiveDomainObject{
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {
-                navn =  rs.getString("navn");
-                epost = rs.getString("epost");
-                type = rs.getInt("brukertype");
+                ovelse =  rs.getString("ovelse");
+                beskrivelse = rs.getString("beskrivelse");
             }
 
         } catch (Exception e) {
@@ -32,14 +30,10 @@ public class OvelsesGruppe extends ActiveDomainObject{
     public void save (Connection conn) {
         try {
             Statement stmt = conn.createStatement(); 
-            ResultSet rs = stmt.executeQuery("update Bruker set navn="+navn+", epost="+epost+", brukertype="+type+"where bid="+bid);
+            ResultSet rs = stmt.executeQuery("update Bruker set ovelse="+ovelse+", beskrivelse="+beskrivelse+"where bid="+bid);
         } catch (Exception e) {
             System.out.println("db error during update of bruker="+e);
             return;
         }
     }
 }
-
-
-
-

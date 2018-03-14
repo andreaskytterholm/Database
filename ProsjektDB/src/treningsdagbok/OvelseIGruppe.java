@@ -1,13 +1,11 @@
-package Treningsdagbok;
+package treningsdagbok;
 
-public class Notat extends ActiveDomainObject {
+public class OvelseIGruppe extends ActiveDomainObject {
 	
-	private int notatID;
-	private String form;
-	private String prestasjon;
-	private String beskrivelse;
-	private treningsokt treningsokt;
+	private OvelsesGruppe ovelsesGruppe;
+	private Ovelse ovelse;
 
+	
 	
 	
 	public void initialize (Connection conn) {
