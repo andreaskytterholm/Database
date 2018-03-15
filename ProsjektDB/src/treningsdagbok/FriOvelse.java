@@ -1,6 +1,9 @@
 package treningsdagbok;
 
-public class Friovelse extends ActiveDomainObject{
+import java.sql.*;
+import java.util.*;
+
+public class FriOvelse extends ActiveDomainObject{
 
 	private Ovelse ovelse;
 	private String beskrivelse;
@@ -8,7 +11,6 @@ public class Friovelse extends ActiveDomainObject{
 	
 	
 	public void initialize (Connection conn) {
-        try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {

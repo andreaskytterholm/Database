@@ -11,9 +11,11 @@ public class Apparatovelse extends ActiveDomainObject{
 	private int kilo;
 	private int sett;
 	
-	public Apparatovelse(Ovelse ovelse)
-	{
+	public Apparatovelse(Ovelse ovelse, Apparat apparat, int kilo, int sett){
 		this.ovelse = ovelse;
+		this.apparat = apparat;
+		this.kilo = kilo;
+		this.sett = sett;
 	}
 	
 	

@@ -22,6 +22,8 @@ public class Apparat extends ActiveDomainObject{
 		this.senterID = senterID;
 	}
 	
+	//Naar man skal opprette et apparat kan man bruke regApparat i treningssenter
+	
 	
 	public void initialize (Connection conn) {
         try {
