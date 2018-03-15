@@ -1,7 +1,8 @@
 package treningsdagbok;
 
-import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
+
+	import java.sql.*;
+	import java.util.*;
 
 public class Treningssenter extends ActiveDomainObject{
 	

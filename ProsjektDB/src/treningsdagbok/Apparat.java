@@ -1,5 +1,9 @@
 package treningsdagbok;
 
+
+	import java.sql.*;
+	import java.util.*;
+
 public class Apparat extends ActiveDomainObject{
 	
 	private int apparatID;
@@ -14,7 +18,7 @@ public class Apparat extends ActiveDomainObject{
             ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {
                 navn =  rs.getString("navn");
-                epost = rs.getString("epost");
+                beskrivelse = rs.getString("beskrivelse");
                 type = rs.getInt("brukertype");
             }
 

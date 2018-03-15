@@ -1,13 +1,17 @@
 package treningsdagbok;
 
-public class apparatovelse extends ActiveDomainObject{
+
+
+	import java.sql.*;
+	import java.util.Properties;
+public class Apparatøvelse extends ActiveDomainObject{
 	
-	private ovelse ovelse;
+	private Ovelse ovelse;
 	private Apparat apparat;
 	private int kilo;
 	private int sett;
 	
-	public apparatovelse(String ovelse)
+	public Apparatøvelse(String ovelse)
 	{
 		this.ovlese = ovelse;
 	}

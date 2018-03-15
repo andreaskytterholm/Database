@@ -1,12 +1,16 @@
 package treningsdagbok;
 
+
+
+	import java.sql.*;
+	import java.util.Properties;
 public class Notat extends ActiveDomainObject {
 	
 	private int notatID;
 	private String form;
 	private String prestasjon;
 	private String beskrivelse;
-	private treningsokt treningsokt;
+	private Treningsokt treningsokt;
 
 	
 	

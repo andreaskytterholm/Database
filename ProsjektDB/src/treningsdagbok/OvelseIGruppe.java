@@ -1,5 +1,8 @@
 package treningsdagbok;
 
+
+	import java.sql.*;
+	import java.util.Properties;
 public class OvelseIGruppe extends ActiveDomainObject {
 	
 	private OvelsesGruppe ovelsesGruppe;
