@@ -4,8 +4,6 @@ package treningsdagbok;
 	import java.sql.*;
 	import java.util.*;
 
-import Tst.Bruker;
-
 public class Treningssenter extends ActiveDomainObject{
 	
 	private int senterID;

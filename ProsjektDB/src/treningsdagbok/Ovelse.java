@@ -8,13 +8,13 @@ public class Ovelse extends ActiveDomainObject{
 
 	private int ovID;
 	private String navn;
-	
-	private static ID_provider;
-	
+	private static int IDCount;
 	
 	
-	public Ovelse (int ovID) {
-		ovID = ID_provider;
+	
+	public Ovelse (String navn) {
+		this.ovID = IDCount;
+		this.navn = navn;
 	}
 	
 	public int getovID() {

@@ -15,7 +15,25 @@ public class Treningsokt extends ActiveDomainObject{
 	private int prestasjon;
 	private int form;
 	private String notat;
+	private static int IDCount;
 	
+	
+	
+	public Treningsokt(Date dato, int tidspunkt, int varighet, int prestasjon, int form, String notat){
+		IDCount++;
+		this.oktID = IDCount;
+		this.dato = dato;
+		this.tidspunkt = tidspunkt;
+		this.varighet = varighet;
+		this.prestasjon = prestasjon;
+		this.form = form;
+		this.notat = notat;
+		this.ovelser = new ArrayList<Ovelse>();
+	}
+	
+	public void addOvelse(Ovelse o) {
+		ovelser.add(o);
+	}
 	
 	
 	public void initialize (Connection conn) {
