@@ -12,6 +12,9 @@ public class Treningsokt extends ActiveDomainObject{
 	private Date dato;
 	private int tidspunkt;
 	private int varighet;
+	private int prestasjon;
+	private int form;
+	private String notat;
 	
 	
 	

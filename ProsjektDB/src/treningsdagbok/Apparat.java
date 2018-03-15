@@ -9,7 +9,18 @@ public class Apparat extends ActiveDomainObject{
 	private int apparatID;
 	private String navn;
 	private String beskrivelse;
-	private Treningssenter treningssenter;
+	private int senterID;
+	private static int IDCount = 0;
+	
+	
+	
+	public Apparat(String navn, String beskrivelse, int senterID) {
+		IDCount ++;
+		this.apparatID = IDCount;
+		this.navn = navn;
+		this.beskrivelse = beskrivelse;
+		this.senterID = senterID;
+	}
 	
 	
 	public void initialize (Connection conn) {

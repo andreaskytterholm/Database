@@ -4,13 +4,32 @@ package treningsdagbok;
 	import java.sql.*;
 	import java.util.*;
 
+import Tst.Bruker;
+
 public class Treningssenter extends ActiveDomainObject{
 	
 	private int senterID;
 	private String navn;
+	private ArrayList<Apparat> apparater;
+	private static int IDCount = 0;
 
 	
 	
+	
+	public Treningssenter(String navn) {
+		IDCount ++;
+		senterID = IDCount;
+		this.navn = navn;
+		apparater = new ArrayList<Apparat>();
+		
+	}
+	
+	
+	 public void regApparat (Connection conn, String navn, String beskrivelse) {
+	        Apparat apparat = new Apparat (navn, beskrivelse, this.senterID);
+	        apparat.initialize (conn);
+	        apparater.add(apparat);
+	}
 	
 	public void initialize (Connection conn) {
         try {
