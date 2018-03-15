@@ -4,16 +4,16 @@ package treningsdagbok;
 
 	import java.sql.*;
 	import java.util.Properties;
-public class Apparatøvelse extends ActiveDomainObject{
+public class Apparatovelse extends ActiveDomainObject{
 	
 	private Ovelse ovelse;
 	private Apparat apparat;
 	private int kilo;
 	private int sett;
 	
-	public Apparatøvelse(String ovelse)
+	public Apparatovelse(Ovelse ovelse)
 	{
-		this.ovlese = ovelse;
+		this.ovelse = ovelse;
 	}
 	
 	
