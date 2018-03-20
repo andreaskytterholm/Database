@@ -38,29 +38,26 @@ public class Grensesnitt{
 				query = "INSERT INTO Apparat values(\""+navn+"\",\""+beskrivelse+"\",\""+senter+"\")";
 				Driver.Write(query);
 				
-			}else if(svar == 2){ //Trenger litt arbeid
+			}else if(svar == 2){ //Funker kanskje, test
 				System.out.println("Hva er øvelsens navn?");
 				String ØvelsesNavn = scanner.nextLine();
-				
-				///query = "insert ignore into øvelse values('"+ØvelsesNavn+"')";
-//				Driver.Write(query);
 				System.out.println("Apparat eller Fri?");
 				String type =scanner.nextLine();
 				if (type.equals("Apparat")) {
 					System.out.println("(kilo *komma* sett *komma* apparatID) *enter*");
 					String[] input = scanner.nextLine().split(",");
-					query = "insert ignore into Øvelse values(\""+ØvelsesNavn+"\",NULL,\""+input[0]+"\",\""+input[1]+"\",\""+input[2]+"\")";
+					query = "insert into Øvelse(ØvelsesNavn, Kilo, Sett, ApparatID) values(\""+ØvelsesNavn+"\",\""+input[0]+"\",\""+input[1]+"\",\""+input[2]+"\")";
 					Driver.Write(query);
 					query = "INSERT INTO ØvelsePåApparat values( '"+ ØvelsesNavn+"',"+Integer.parseInt(input[0])+","+Integer.parseInt(input[1])+",'"+input[2]+"')";
 					Driver.Write(query);
 				} else {
-					System.out.println("Beskrivelse for øvelse uten apparat?");
+					System.out.println("Beskrivelse for friøvelse?");
 					String beskrivelse = scanner.nextLine();
-					query = "insert into Øvelse values('"+ØvelsesNavn+"','"+beskrivelse+"')";
+					query = "insert into Øvelse(ØvelsesNavn, ØvelsesBeskrivelse) values('"+ØvelsesNavn+"','"+beskrivelse+"')";
 					Driver.Write(query);
 				}
 				
-			}else if(svar == 3) { //Se på registrering av øvelser
+			}else if(svar == 3) { //Usikker på listing av øvelser, men test
 				System.out.println("dato(ÅÅÅÅMMDD), tidspunkt(tt:mm:ss), varighet(tt:mm:ss), personligForm, prestasjon, notat");
 				String dato = scanner.nextLine();
 				String tidspunkt = scanner.nextLine();
@@ -77,37 +74,37 @@ public class Grensesnitt{
 				int øktid = result.getInt(1);
 				System.out.println("Øvelser separert av komma");
 				String[] øvelser = scanner.nextLine().split(",");
-				for (String øvelse : øvelser) {
-					query = "insert into øvelserfortreningsøkt values("+øktid+",\""+øvelse+"\")";
+				for (String Øvelse : øvelser) {
+					query = "insert into ØvelseIØkt values("+øktid+",\""+Øvelse+".ØvID\")";
 					Driver.Write(query);
 				}
 				
-			}else if(svar == 4) { //Funker
+			}else if(svar == 4) { //Test
 				System.out.println("skriv inn en n");
 				int n = Integer.parseInt(scanner.nextLine());
-				query = "SELECT * FROM treningsøkt ORDER BY dato DESC,tidspunkt DESC LIMIT "+ n;
+				query = "SELECT * FROM Treningsøkt ORDER BY dato DESC,tidspunkt DESC LIMIT "+ n;
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
 			}
-			else if(svar == 5) { //Se på kobling med øvelse for å finne navn 
+			else if(svar == 5) { //Test 
 				System.out.println("Start: ÅÅÅÅMMDD *enter*\n"
 						+ "Slutt: ÅÅMMDD");
 				String start = scanner.nextLine();
 				String slutt = scanner.nextLine();
 				
-				query = "select personligform,prestasjon,notat, ØvelseIØkt.ØvID,kilo,sett from treningsøkt\n"
-						+"natural join øvelserfortreningsøkt \n"
-						+"left join øvelsemedapparat on øvelserfortreningsøkt.navn = øvelsemedapparat.navn"
+				query = "select personligform,prestasjon,notat, ØvelseIØkt.ØvID,kilo,sett from Treningsøkt\n"
+						+"natural join ØvelseIØkt \n"
+						+"left join Øvelse on ØvelseIØkt.ØvID = Øvelse.ØvID"
 						+" where dato between '"+ start+"' and '"+slutt+"';";
 				System.out.println(query);
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
 				
-			}else if(svar == 6) { //Se over for vår egen funksjonalitet
+			}else if(svar == 6) { //Test
 				ArrayList<String> øvelseliste = new ArrayList<>();
-				System.out.println("Hvilken muskelgruppe?");
-				String muskelgruppeNavn = scanner.nextLine();
-				Driver.PrintTable("øvelse");
+				System.out.println("Navn på øvelsesgruppe:");
+				String GruppeNavn = scanner.nextLine();
+				Driver.PrintTable("Øvelse");
 				while(true) {
 					System.out.println("Skriv inn ønsket øvelse fra listen, \"quit\" for å hoppe ut av loop");
 					String nyØvelse = scanner.nextLine();
@@ -118,18 +115,18 @@ public class Grensesnitt{
 						øvelseliste.add(nyØvelse);
 					}
 				}
-				query = "insert ignore into øvelsesgruppe values(\""+muskelgruppeNavn+"\")";
+				query = "insert ignore into ØvelsesGruppe values(\""+GruppeNavn+"\")";
 				Driver.Write(query);
 				for (String øvelse : øvelseliste) {
-					query = "insert ignore into gruppeforøvelse values(\""+øvelse+"\",\""+muskelgruppeNavn+"\")";
+					query = "insert ignore into ØvelseIGruppe values(\""+øvelse+".ØvID\",\""+GruppeNavn+"\")";
 					Driver.Write(query);
 				}
 			}
-			else if(svar == 7) { //Se over hvordan våre øvelsesgrupper funker
-				Driver.PrintTable("øvelsesgruppe");
+			else if(svar == 7) { //Test
+				Driver.PrintTable("Øvelsesgruppe");
 				System.out.println("Hvilken gruppe vil du se øvelser fra?");
 				String gruppe = scanner.nextLine();
-				query = "select øvelsesnavn from gruppeforøvelse where gruppenavn=\""+gruppe+"\"";
+				query = "select ØvelsesNavn from ØvelseIGruppe NATURAL JOIN Øvelse where GruppeNavn=\""+gruppe+"\"";
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
 				
