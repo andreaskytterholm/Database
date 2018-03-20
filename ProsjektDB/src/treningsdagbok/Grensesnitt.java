@@ -1,4 +1,5 @@
 import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,44 +20,48 @@ public class Grensesnitt{
 					+ "6) Lage øvelsesgruppe\n"
 					+ "7) Finne øvelser i samme gruppe\n"
 					+ "8) Finne apparat på senter\n"
-					+ "9) Printe en tabell\n"
 					+ "0) Avslutt\n"
 					+ "##############################\n");
 			int svar = Integer.parseInt(scanner.nextLine());
 			if(svar == 0) {
 				break;
 				
-			}else if(svar == 1) { //Må endres for å få det inn under senter
-				System.out.println("Hva er apparatets navn og beskrivelse?");
+			}else if(svar == 1) { //Test
+				System.out.println("Hva er apparatets navn *enter* beskrivelse?");
 				String navn = scanner.nextLine();
 				String beskrivelse = scanner.nextLine();
-				query = "INSERT INTO Apparat values(\""+navn+"\",\""+beskrivelse+"\")";
+				query = "SELECT * FROM Treningssenter";
+				result = Driver.Read(query);
+				Driver.PrintSet(result);
+				System.out.println("Hvilket senterID hører apparatet til?");
+				String senter = scanner.nextLine();
+				query = "INSERT INTO Apparat values(\""+navn+"\",\""+beskrivelse+"\",\""+senter+"\")";
 				Driver.Write(query);
 				
-			}else if(svar == 2){
-				System.out.println("Skriv inn navn. Fri eller på apparat? (F eller A)");
-				String navn =scanner.nextLine();
-				System.out.println(navn);
-				String medUten = scanner.nextLine();
-				System.out.println(medUten);
-				if(medUten.equals("A")) { 
-					System.out.println("(kilo komma sett komma apparatnavn) adskilt av *enter*");
-					while(scanner.hasNextLine()) {
-						String[] input = scanner.nextLine().split(",");
-						query = "INSERT INTO ApparatOvelse values( \""+ navn+"\","+Integer.parseInt(input[0])+","+Integer.parseInt(input[1])+",\""+input[2]+"\")";
-						System.out.println(query);
-						Driver.Write(query);
-					}
+			}else if(svar == 2){ //Trenger litt arbeid
+				System.out.println("Hva er øvelsens navn?");
+				String ØvelsesNavn = scanner.nextLine();
 				
-				}
-				else if(medUten.equals("F")) { //Funker
-					query = "INSERT INTO FriOvelse values(\""+navn+"\")";
+				///query = "insert ignore into øvelse values('"+ØvelsesNavn+"')";
+//				Driver.Write(query);
+				System.out.println("Apparat eller Fri?");
+				String type =scanner.nextLine();
+				if (type.equals("Apparat")) {
+					System.out.println("(kilo *komma* sett *komma* apparatID) *enter*");
+					String[] input = scanner.nextLine().split(",");
+					query = "insert ignore into Øvelse values(\""+ØvelsesNavn+"\",NULL,\""+input[0]+"\",\""+input[1]+"\",\""+input[2]+"\")";
+					Driver.Write(query);
+					query = "INSERT INTO ØvelsePåApparat values( '"+ ØvelsesNavn+"',"+Integer.parseInt(input[0])+","+Integer.parseInt(input[1])+",'"+input[2]+"')";
+					Driver.Write(query);
+				} else {
+					System.out.println("Beskrivelse for øvelse uten apparat?");
+					String beskrivelse = scanner.nextLine();
+					query = "insert into Øvelse values('"+ØvelsesNavn+"','"+beskrivelse+"')";
 					Driver.Write(query);
 				}
 				
-				
-			}else if(svar == 3) { //Funker
-				System.out.println("dato(ÅÅÅÅMMDD), tidspunkt(tt:mm:ss), varighet(tt:mm:ss), personligForm, prestasjon, notat?");
+			}else if(svar == 3) { //Se på registrering av øvelser
+				System.out.println("dato(ÅÅÅÅMMDD), tidspunkt(tt:mm:ss), varighet(tt:mm:ss), personligForm, prestasjon, notat");
 				String dato = scanner.nextLine();
 				String tidspunkt = scanner.nextLine();
 				String varighet = scanner.nextLine();
@@ -65,7 +70,17 @@ public class Grensesnitt{
 				String notat = scanner.nextLine();
 				query = "INSERT INTO Treningsøkt (dato,tidspunkt,varighet,personligForm,prestasjon,notat)"
 						+ " values (\""+dato+"\",\""+tidspunkt+"\",\""+varighet+"\","+form+","+prestasjon+",\""+notat+"\")";	
-				Driver.Write(query); 
+				Driver.Write(query);
+				query = "select count(*) from treningsøkt";
+				result = Driver.Read(query);
+				result.next();
+				int øktid = result.getInt(1);
+				System.out.println("Øvelser separert av komma");
+				String[] øvelser = scanner.nextLine().split(",");
+				for (String øvelse : øvelser) {
+					query = "insert into øvelserfortreningsøkt values("+øktid+",\""+øvelse+"\")";
+					Driver.Write(query);
+				}
 				
 			}else if(svar == 4) { //Funker
 				System.out.println("skriv inn en n");
@@ -74,25 +89,21 @@ public class Grensesnitt{
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
 			}
-			else if(svar == 5) { //Usikker
-				System.out.println("Start: tt:mm:ss,ÅÅÅÅMMDD *enter*\n"
-						+ "Slutt: tt:mm:ss,ÅÅMMDD");
-				String[] start = scanner.nextLine().split(",");
-				String[] slutt = scanner.nextLine().split(",");
+			else if(svar == 5) { //Se på kobling med øvelse for å finne navn 
+				System.out.println("Start: ÅÅÅÅMMDD *enter*\n"
+						+ "Slutt: ÅÅMMDD");
+				String start = scanner.nextLine();
+				String slutt = scanner.nextLine();
 				
-				query = "SELECT * \n" 
-						+"FROM Øvelse NATURAL JOIN ØvelserForTreningsøkt NATURAL JOIN Treningsøkt \n"
-						+ "where (treningsøkt.dato>=datostart(\""+start[1]+"\") \n"
-						+ "and treningsøkt.dato<=datoslutt(\""+slutt[1]+"\") \n"
-						+ "and ((treningsøkt.tidspunkt>=tidstart(\""+start[0]+"\") \n"
-						+ "and treningsøkt.tidspunkt<=tidslutt(\""+slutt[0]+"\")) or (AddTime(treningsøkt.tidspunkt,treningsøkt.varighet)>=tidsstart \n"
-						+ "and AddTime(treningsøkt.tidspunkt,treningsøkt.varighet)<=tidslutt) or (treningsøkt.tidspunkt<=tidsstart \n"
-						+ "and AddTime(treningsøkt.tidspunkt,treningsøkt.varighet)>=tidslutt)))";
+				query = "select personligform,prestasjon,notat, ØvelseIØkt.ØvID,kilo,sett from treningsøkt\n"
+						+"natural join øvelserfortreningsøkt \n"
+						+"left join øvelsemedapparat on øvelserfortreningsøkt.navn = øvelsemedapparat.navn"
+						+" where dato between '"+ start+"' and '"+slutt+"';";
 				System.out.println(query);
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
 				
-			}else if(svar == 6) { //Funker ikke ForeignKEY-ERROR
+			}else if(svar == 6) { //Se over for vår egen funksjonalitet
 				ArrayList<String> øvelseliste = new ArrayList<>();
 				System.out.println("Hvilken muskelgruppe?");
 				String muskelgruppeNavn = scanner.nextLine();
@@ -107,39 +118,33 @@ public class Grensesnitt{
 						øvelseliste.add(nyØvelse);
 					}
 				}
+				query = "insert ignore into øvelsesgruppe values(\""+muskelgruppeNavn+"\")";
+				Driver.Write(query);
 				for (String øvelse : øvelseliste) {
-					query = "insert into gruppeforøvelse values(\""+øvelse+"\",\""+muskelgruppeNavn+"\")";
+					query = "insert ignore into gruppeforøvelse values(\""+øvelse+"\",\""+muskelgruppeNavn+"\")";
 					Driver.Write(query);
 				}
 			}
-			else if(svar == 7) { //Usikker-Sjekke etter at func-6 er på plass
+			else if(svar == 7) { //Se over hvordan våre øvelsesgrupper funker
 				Driver.PrintTable("øvelsesgruppe");
 				System.out.println("Hvilken gruppe vil du se øvelser fra?");
 				String gruppe = scanner.nextLine();
-				query = "SELECT øvelsesnavn FROM Øvelsesgruppe NATURAL JOIN GruppeForØvelse\n" 
-						+"where GruppeForØvelse.gruppenavn=gruppenavn(\""+gruppe+"\")";
+				query = "select øvelsesnavn from gruppeforøvelse where gruppenavn=\""+gruppe+"\"";
 				result = Driver.Read(query);
 				Driver.PrintSet(result);
+				
 			}
-			else if(svar == 8) { //Usikker ForeignKey-ERROR
-				System.out.println("Skriv navn på apparat du vil se øvelser til: ");
-				String apparat = scanner.nextLine();
-				query = "SELECT *\n"
-						+"FROM Øvelse NATURAL JOIN ØvelseMedApparat NATURAL JOIN Apparat"
-						+" where Apparat.navn=navn(\""+apparat+"\")";
-				System.out.println(query);
+			else if(svar == 8) { //Test
+				System.out.println("Skriv ID på senter du vil se apparater til: ");
+				String senterID = scanner.nextLine();
+				query = "SELECT * "
+						+"FROM Apparat NATURAL JOIN Treningssenter on Apparat.senterID = Treningssenter.senterID"
+						+" where Treningssenter.SenterId= \""+senterID+"\"";
 				result = Driver.Read(query);
-				Driver.PrintSet(result);
-			}
-			else if(svar == 9) { //Funker
-				System.out.println("Hva vil du printe?");
-				String skalPrintes = scanner.nextLine();
-				Driver.PrintTable(skalPrintes);
-				result = Driver.Read("select * from \""+skalPrintes+"\"");
 				Driver.PrintSet(result);
 			}
 			else{
-				System.out.println("Illegal input: try again");
+				System.out.println("Ugyldig input: prøv igjen");
 			}
 		}
 	}
