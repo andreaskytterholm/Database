@@ -3,7 +3,7 @@ package treningsdagbok;
 import java.sql.*;
 import java.util.*;
 
-public class FriOvelse extends ActiveDomainObject{
+public class Friovelse extends ActiveDomainObject{
 
 	private Ovelse ovelse;
 	private String beskrivelse;

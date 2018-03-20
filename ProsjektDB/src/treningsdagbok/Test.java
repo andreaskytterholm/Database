@@ -15,11 +15,11 @@ public class Test {
 	
 	public void connect() {
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql:///prosjekt1?user=root&passord=root");
+			conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1/prosjekt1?user=root&passord=root");
 			
 		}
 		catch (SQLException ex) {
-			System.out.println("SQLException: " + ex.getMessate());
+			System.out.println("SQLException: " + ex.getMessage());
 		}
 	}
 	

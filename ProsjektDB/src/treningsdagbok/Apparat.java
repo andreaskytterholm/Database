@@ -28,7 +28,7 @@ public class Apparat extends ActiveDomainObject{
 	public void initialize (Connection conn) {
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select navn, epost, brukertype from Bruker where bid=" + bid);
+            ResultSet rs = stmt.executeQuery("select apparatID, apparatnavn, navn, epost, brukertype from Bruker where bid=" + bid);
             while (rs.next()) {
                 navn =  rs.getString("navn");
                 beskrivelse = rs.getString("beskrivelse");
